@@ -26,8 +26,12 @@ let sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 let quest = [...QuestsStore.quests.values()].find(
   (x) => x.userStatus?.enrolledAt && !x.userStatus?.completedAt
 );
+let isApp = navigator.userAgent.includes("Electron/")
 
-if (!quest) {
+if(!isApp) {
+  console.log("[PT-BR] Isso não funciona mais no navegador. Use o aplicativo desktop!")
+	console.log("[EN-US] This no longer works in browser. Use the desktop app!")
+} else if (!quest) {
   console.log("[PT-BR] Você não tem nenhuma missão incompleta!");
   console.log("[EN-US] You don't have any incomplete quests!");
 } else {
@@ -36,8 +40,8 @@ if (!quest) {
   );
   let secondsNeeded = quest.config.streamDurationRequirementMinutes * 60;
 
-  // Defina uma função para enviar periodicamente solicitações para concluir a missão
-  // Define a function to periodically send requests to complete the quest
+  // Função para enviar periodicamente solicitações para concluir a missão
+  // Function to periodically send requests to complete the quest
   let heartbeat = async function () {
     console.log(
       "[PT-BR] Iniciando missão",
